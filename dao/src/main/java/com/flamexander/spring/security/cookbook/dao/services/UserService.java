@@ -31,12 +31,10 @@ public class UserService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("User '%s' not found", username)));
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user));
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(User user) {
-        Collection<Role> roles = user.getRoles();
-
+    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         List<SimpleGrantedAuthority> authorityGrants = roles.stream().flatMap(x -> x.getAuthorities().stream()).map(x -> new SimpleGrantedAuthority(x.getName())).collect(Collectors.toList());
         List<SimpleGrantedAuthority> roleGrants = roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
 
