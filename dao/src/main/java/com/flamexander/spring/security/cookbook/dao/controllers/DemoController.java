@@ -41,4 +41,22 @@ public class DemoController {
         User user = userService.findByUsername(principal.getName()).orElseThrow(() -> new RuntimeException("Unable to find user by username: " + principal.getName()));
         return "Authenticated user info: " + user.getUsername() + " : " + user.getEmail();
     }
+
+    @GetMapping("/test/create-user")
+    @PreAuthorize("hasAuthority('CREATE_USER')")
+    public String createUser() {
+        return "create user";
+    }
+
+    @GetMapping("/test/delete-account")
+    @PreAuthorize("hasAuthority('DELETE_ACCOUNT')")
+    public String deleteAccount() {
+        return "delete account";
+    }
+
+    @GetMapping("/test/read-all-messages")
+    @PreAuthorize("hasAuthority('READ_ALL_MESSAGES')")
+    public String readAllMessages() {
+        return "read all messages";
+    }
 }
