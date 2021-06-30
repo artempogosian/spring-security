@@ -1,6 +1,5 @@
 package com.flamexander.spring.security.cookbook.dao.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -29,4 +28,8 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
 }

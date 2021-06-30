@@ -12,6 +12,12 @@ create table roles (
   primary key (id)
 );
 
+create table authorities (
+  id                    serial,
+  name                  varchar(50) not null,
+  primary key (id)
+);
+
 CREATE TABLE users_roles (
   user_id               bigint not null,
   role_id               int not null,
@@ -20,15 +26,37 @@ CREATE TABLE users_roles (
   foreign key (role_id) references roles (id)
 );
 
+CREATE TABLE roles_authorities (
+  role_id               int not null,
+  authority_id          int not null,
+  primary key (role_id, authority_id),
+  foreign key (role_id) references roles (id),
+  foreign key (authority_id) references authorities (id)
+);
+
+insert into authorities (name)
+values
+('DELETE_ACCOUNT'), ('CREATE_USER'), ('READ_ALL_MESSAGES');
+
+
 insert into roles (name)
 values
-('ROLE_USER'), ('ROLE_ADMIN');
+('ROLE_USER'), ('ROLE_ADMIN'), ('ROLE_VIEW');
 
 insert into users (username, password, email)
 values
-('user', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'user@gmail.com');
+('user', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'user@gmail.com'),
+('test', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'test@gmail.com');
 
 insert into users_roles (user_id, role_id)
 values
 (1, 1),
-(1, 2);
+(1, 2),
+(2, 3);
+
+insert into roles_authorities (role_id, authority_id)
+values
+(1, 1),
+(1, 2),
+(1, 3),
+(3, 3);
