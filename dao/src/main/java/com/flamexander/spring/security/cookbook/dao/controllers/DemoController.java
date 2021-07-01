@@ -70,4 +70,14 @@ public class DemoController {
     public String SecuredByAuthorityMethod() {
         return testService.SecuredByAuthorityMethod();
     }
+
+    @GetMapping("/get-user")
+    public User getUser(Principal principal) {
+        return userService.findByUsername(principal.getName()).orElseThrow(() -> new RuntimeException("Unable to find user by username: " + principal.getName()));
+    }
+
+    @GetMapping("/test/calc-data")
+    public int calcData(int a, int b) {
+        return a + b;
+    }
 }
